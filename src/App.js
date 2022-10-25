@@ -1,6 +1,65 @@
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+  const [breakLength, setBreakLength] = useState(5);
+  const [sessionLength, setSessionLength] = useState(25);
+  const [play, setPlay] = useState(false);
+  const [timingType, setTimingType] = useState('SESSION');
+  const [timeLeft, setTimeLeft] = useState(1500);
+
+  const handleBreakIncrease = () => {
+    if (breakLength < 60) {
+      setBreakLength(breakLength + 1);
+    }
+  };
+
+  const handleBreakDecrease = () => {
+    if (breakLength > 1) {
+      setBreakLength(breakLength - 1);
+    }
+  };
+
+  const handleSessionIncrease = () => {
+    if (sessionLength < 60) {
+      setSessionLength(sessionLength + 1);
+    }
+  };
+
+  const handleSessionDecrease = () => {
+    if (sessionLength > 25) {
+      setSessionLength(sessionLength - 1);
+    }
+  };
+
+  const timeFormatter = () => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft - minutes * 60;
+    const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
+
+  const timeout = setTimeout(() => {
+    if (timeLeft && play) {
+      setTimeLeft(timeLeft - 1);
+    }
+  }, 1000);
+
+  const handlePlay = () => {
+    clearTimeout(timeout);
+    setPlay(!play);
+    // if(play){
+    //   setPlay(false)
+    // } else{
+    //   setPlay(true)
+    // }
+  };
+
+  // dummy function below - good idea for future projects
+  const { handleReset } = {};
+
+  const title = timingType === 'SESSION' ? 'Session' : ' Break';
   return (
     <div className="App">
       <div className="container">
